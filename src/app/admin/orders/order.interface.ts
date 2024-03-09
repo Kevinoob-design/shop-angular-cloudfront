@@ -1,4 +1,4 @@
-import { ShippingInfo } from '../../cart/shipping-info.interface';
+import { ShippingInfo } from '../../cart/shipping-info.interface'
 
 export enum OrderStatus {
   open = 'open',

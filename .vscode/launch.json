@@ -1,0 +1,30 @@
+{
+	"configurations": [
+		{
+			"name": "chrome",
+			"request": "launch",
+			"type": "chrome",
+			"url": "http://localhost:4200",
+			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"name": "node",
+			"request": "launch",
+			"type": "node-terminal",
+			"command": "yarn start",
+			"cwd": "${workspaceFolder}"
+		}
+	],
+	"compounds": [
+		{
+			"name": "debug",
+			"stopAll": true,
+			"presentation": {
+				"hidden": false,
+				"group": "debug",
+				"order": 1
+			},
+			"configurations": ["chrome", "node"]
+		}
+	]
+}

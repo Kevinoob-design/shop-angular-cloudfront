@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
-import { CartService } from './cart.service';
-import { ProductsService } from '../products/products.service';
-import { Observable } from 'rxjs';
-import { ProductCheckout } from '../products/product.interface';
-import { map, switchMap } from 'rxjs/operators';
+import { Injectable } from '@angular/core'
+import { Observable } from 'rxjs'
+import { map, switchMap } from 'rxjs/operators'
 
-@Injectable({
-  providedIn: 'root',
-})
+import { ProductCheckout } from '../products/product.interface'
+import { ProductsService } from '../products/products.service'
+import { CartService } from './cart.service'
+
+@Injectable({providedIn: 'root'})
 export class CheckoutService {
   constructor(
     private readonly cartService: CartService,
@@ -22,11 +21,11 @@ export class CheckoutService {
             products.map((product) => ({
               ...product,
               orderedCount: cart[product.id],
-              totalPrice: +(cart[product.id] * product.price).toFixed(2),
+              totalPrice: +(cart[product.id] * product.price).toFixed(2)
             }))
           )
         )
       )
-    );
+    )
   }
 }

@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { CheckoutService } from './checkout.service';
-import { ProductCheckout } from '../products/product.interface';
-import { Observable } from 'rxjs';
-import { CartService } from './cart.service';
-import { map, shareReplay } from 'rxjs/operators';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper'
+import { Component, OnInit } from '@angular/core'
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms'
+import { Observable } from 'rxjs'
+import { map, shareReplay } from 'rxjs/operators'
+
+import { ProductCheckout } from '../products/product.interface'
+import { CartService } from './cart.service'
+import { CheckoutService } from './checkout.service'
 
 @Component({
   selector: 'app-cart',
@@ -14,17 +15,17 @@ import { map, shareReplay } from 'rxjs/operators';
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: { displayDefaultIndicatorType: false },
-    },
-  ],
+      useValue: { displayDefaultIndicatorType: false }
+    }
+  ]
 })
 export class CartComponent implements OnInit {
-  products$!: Observable<ProductCheckout[]>;
-  totalPrice$!: Observable<number>;
-  totalInCart$!: Observable<number>;
-  cartEmpty$!: Observable<boolean>;
+  products$!: Observable<ProductCheckout[]>
+  totalPrice$!: Observable<number>
+  totalInCart$!: Observable<number>
+  cartEmpty$!: Observable<boolean>
 
-  shippingInfo!: UntypedFormGroup;
+  shippingInfo!: UntypedFormGroup
 
   constructor(
     private readonly fb: UntypedFormBuilder,
@@ -33,16 +34,17 @@ export class CartComponent implements OnInit {
   ) {}
 
   get fullName(): string {
-    const { firstName, lastName } = this.shippingInfo.value;
-    return `${firstName} ${lastName}`;
+    const { firstName, lastName } = this.shippingInfo.value
+
+    return `${firstName} ${lastName}`
   }
 
   get address(): string {
-    return this.shippingInfo.value.address;
+    return this.shippingInfo.value.address
   }
 
   get comment(): string {
-    return this.shippingInfo.value.comment;
+    return this.shippingInfo.value.comment
   }
 
   ngOnInit(): void {
@@ -50,36 +52,37 @@ export class CartComponent implements OnInit {
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
       address: ['', Validators.required],
-      comment: '',
-    });
+      comment: ''
+    })
 
     this.products$ = this.checkoutService.getProductsForCheckout().pipe(
       shareReplay({
         refCount: true,
-        bufferSize: 1,
+        bufferSize: 1
       })
-    );
+    )
 
     this.totalPrice$ = this.products$.pipe(
       map((products) => {
-        const total = products.reduce((acc, val) => acc + val.totalPrice, 0);
-        return +total.toFixed(2);
+        const total = products.reduce((acc, val) => acc + val.totalPrice, 0)
+
+        return +total.toFixed(2)
       }),
       shareReplay({
         refCount: true,
-        bufferSize: 1,
+        bufferSize: 1
       })
-    );
+    )
 
-    this.totalInCart$ = this.cartService.totalInCart$;
-    this.cartEmpty$ = this.totalInCart$.pipe(map((count) => count > 0));
+    this.totalInCart$ = this.cartService.totalInCart$
+    this.cartEmpty$ = this.totalInCart$.pipe(map((count) => count > 0))
   }
 
   add(id: string): void {
-    this.cartService.addItem(id);
+    this.cartService.addItem(id)
   }
 
   remove(id: string): void {
-    this.cartService.removeItem(id);
+    this.cartService.removeItem(id)
   }
 }

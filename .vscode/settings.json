@@ -1,0 +1,11 @@
+{
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit",
+		"source.fixAll": "explicit",
+		"source.organizeImports": "never",
+		"editor.insertSpaces": "never"
+	},
+	"editor.copyWithSyntaxHighlighting": true,
+	"editor.bracketPairColorization.enabled": true,
+	"debug.javascript.autoAttachFilter": "onlyWithFlag"
+}

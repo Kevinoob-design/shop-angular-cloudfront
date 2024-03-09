@@ -1,0 +1,60 @@
+{
+	"version": "0.2",
+	"ignorePaths": [
+		"node_modules/**",
+		".husky/**",
+		"docker/**",
+		"dist/**",
+		"documentation/**",
+		"yarn.lock",
+		"docker-compose.*",
+		"Dockerfile*",
+		"package.json",
+		"karma.conf.js",
+		"angular.json"
+	],
+	"dictionaryDefinitions": [],
+	"language": "en,es",
+	"dictionaries": [
+		"Spanish",
+		"corp-terms",
+		"fonts",
+		"filetypes",
+		"companies",
+		"node",
+		"typescript",
+		"npm"
+	],
+	"words": [
+		"angular",
+		"camelCase",
+		"cli",
+		"docker",
+		"docker-compose",
+		"Dockerfile",
+		"e2e",
+		"EPAM",
+		"husky",
+		"jasmine",
+		"kebab-case",
+		"node_modules",
+		"rxjs",
+		"webRoot",
+		"workspaceFolder",
+		"yarn"
+	],
+	"languageSettings": [
+		{
+			"languageId": "markdown",
+			"caseSensitive": true
+		},
+		{
+			"languageId": "typescript",
+			"caseSensitive": false
+		}
+	],
+	"ignoreWords": [],
+	"import": [
+		"@cspell/dict-es-es/cspell-ext.json"
+	]
+}
