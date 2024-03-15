@@ -11,7 +11,8 @@
 		"prepare": "husky install",
 		"lint:format": "npx --no-install lint-staged && npx --no-install pretty-quick --staged",
 		"spell": "cspell \"**\" --gitignore --no-summary --no-progress --no-must-find-files",
-		"spell:in": "cspell stdin"
+		"spell:in": "cspell stdin",
+		"client:deploy": "yarn build && npx --no-install serverless client deploy --no-confirm"
 	},
 	"private": true,
 	"dependencies": {
@@ -67,6 +68,9 @@
 		"prettier": "^3.2.5",
 		"pretty-quick": "^4.0.0",
 		"protractor": "~7.0.0",
+		"serverless": "^3.38.0",
+		"serverless-finch": "^4.0.4",
+		"serverless-single-page-app-plugin": "^1.0.4",
 		"ts-node": "^10.9.1",
 		"typescript": "~5.3.0"
 	},
