@@ -38,6 +38,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run:
-          yarn npx --no-install serverless config credentials -k ${{ secrets.AWS_ACCESS_KEY_ID }} -s ${{
+          npx --no-install serverless config credentials -k ${{ secrets.AWS_ACCESS_KEY_ID }} -s ${{
           secrets.AWS_SECRET_ACCESS_KEY }}
       - run: yarn client:deploy
