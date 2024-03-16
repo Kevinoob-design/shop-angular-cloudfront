@@ -20,23 +20,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --prod --frozen-lockfile
       - run: yarn build
   deploy:
     needs: build
     name: deploy
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
       - run:
           npx --no-install serverless config credentials -k ${{ secrets.AWS_ACCESS_KEY_ID }} -s ${{
           secrets.AWS_SECRET_ACCESS_KEY }}
