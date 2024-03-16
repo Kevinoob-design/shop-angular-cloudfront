@@ -42,3 +42,4 @@ jobs:
           yarn sls config credentials -p aws -k ${{ secrets.AWS_ACCESS_KEY_ID }} -s ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - run: yarn sls deploy
       - run: yarn client:deploy
+      - run: yarn sls domainInfo
