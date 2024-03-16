@@ -37,5 +37,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
+      - run: yarn install --frozen-lockfile
       - run: yarn sls config credentials -k ${{ secrets.AWS_ACCESS_KEY_ID }} -s ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - run: yarn client:deploy
