@@ -11,20 +11,12 @@
 		"Dockerfile*",
 		"package.json",
 		"karma.conf.js",
-		"angular.json"
+		"angular.json",
+		"terraform/**"
 	],
 	"dictionaryDefinitions": [],
 	"language": "en,es",
-	"dictionaries": [
-		"Spanish",
-		"corp-terms",
-		"fonts",
-		"filetypes",
-		"companies",
-		"node",
-		"typescript",
-		"npm"
-	],
+	"dictionaries": ["Spanish", "corp-terms", "fonts", "filetypes", "companies", "node", "typescript", "npm"],
 	"words": [
 		"angular",
 		"camelCase",
@@ -54,7 +46,5 @@
 		}
 	],
 	"ignoreWords": [],
-	"import": [
-		"@cspell/dict-es-es/cspell-ext.json"
-	]
+	"import": ["@cspell/dict-es-es/cspell-ext.json"]
 }

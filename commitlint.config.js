@@ -5,6 +5,7 @@ module.exports = {
 		"header-case": [2, "always", "lower-case"],
 		"body-leading-blank": [2, "always"],
 		"body-empty": [2, "never"],
+		"body-max-line-length": [2, "always", 120],
 		"body-min-length": [2, "always", 40],
 		"body-case": [2, "always", "lower-case"],
 		"trailer-exists": [2, "always", "module:"],
