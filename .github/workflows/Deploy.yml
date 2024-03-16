@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          cache: "yarn"
       - run: yarn install --frozen-lockfile
       - run: yarn build
   deploy:
@@ -37,10 +37,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: serverless deploy
-        uses: serverless/github-action@v3.2
-        with:
-          args: client deploy --no-confirm
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run:
+          yarn npx --no-install serverless config credentials -k ${{ secrets.AWS_ACCESS_KEY_ID }} -s ${{
+          secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: yarn client:deploy
