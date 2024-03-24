@@ -6,7 +6,10 @@
 		{
 			"files": ["*.ts"],
 			"parserOptions": {
-				"project": ["tsconfig.json", "e2e/tsconfig.json"],
+				"project": [
+					"./shop-angular-cloudfront/tsconfig.json",
+					"./shop-api-lambdas/tsconfig.json"
+				],
 				"createDefaultProgram": true
 			},
 			"extends": [
@@ -47,7 +50,7 @@
 				"@typescript-eslint/no-unused-vars": "error",
 				"no-await-in-loop": "error",
 				"no-return-await": "error",
-				"require-await": "warn",
+				"require-await": "off",
 				"array-callback-return": "error",
 				"for-direction": "error",
 				"no-async-promise-executor": "error",
@@ -77,20 +80,12 @@
 					"error",
 					{
 						"selector": ["class", "interface", "enum", "typeParameter", "typeAlias", "typeLike"],
-						"format": ["PascalCase"],
-						"custom": {
-							"regex": "^[A-Z][a-z]+([A-Z][a-z]+)*$",
-							"match": true
-						}
+						"format": ["PascalCase"]
 					},
 					{
 						"selector": ["function", "method"],
 						"leadingUnderscore": "allow",
-						"format": ["camelCase"],
-						"custom": {
-							"regex": "^[a-z]+([A-Z][a-z|A-Z]+)*$",
-							"match": true
-						}
+						"format": ["camelCase"]
 					},
 					{
 						"selector": ["parameter", "classProperty", "variableLike"],

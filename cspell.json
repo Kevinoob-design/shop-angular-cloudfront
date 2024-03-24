@@ -33,7 +33,8 @@
 		"rxjs",
 		"webRoot",
 		"workspaceFolder",
-		"yarn"
+		"yarn",
+		"middyfy"
 	],
 	"languageSettings": [
 		{
