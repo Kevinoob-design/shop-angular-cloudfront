@@ -5,7 +5,7 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  build-front-end:
     runs-on: ubuntu-latest
 
     strategy:
@@ -14,10 +14,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
+      - name: Install deps
+        working-directory: ./shop-angular-cloudfront
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        working-directory: ./shop-angular-cloudfront
+        run: yarn build
