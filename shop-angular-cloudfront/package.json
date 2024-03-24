@@ -1,0 +1,54 @@
+{
+	"name": "app",
+	"version": "0.0.0",
+	"scripts": {
+		"ng": "ng",
+		"start": "ng serve",
+		"build": "ng build",
+		"test": "ng test",
+		"e2e": "ng e2e",
+		"client:deploy": "yarn build && npx --no-install serverless client deploy --no-confirm"
+	},
+	"private": true,
+	"dependencies": {
+		"@angular/animations": "^17.2.4",
+		"@angular/cdk": "^17.2.2",
+		"@angular/common": "^17.2.4",
+		"@angular/compiler": "^17.2.4",
+		"@angular/core": "^17.2.4",
+		"@angular/forms": "^17.2.4",
+		"@angular/material": "^17.2.2",
+		"@angular/platform-browser": "^17.2.4",
+		"@angular/platform-browser-dynamic": "^17.2.4",
+		"@angular/router": "^17.2.4",
+		"bootstrap": "^5.3.3",
+		"rxjs": "^7.8.0",
+		"tslib": "^2.5.0",
+		"zone.js": "^0.14.4"
+	},
+	"devDependencies": {
+		"@angular-devkit/build-angular": "^17.2.3",
+		"@angular/cli": "^17.2.3",
+		"@angular/compiler-cli": "^17.2.4",
+		"@types/jasmine": "^5.1.4",
+		"@types/node": "^20.11.25",
+		"husky": "^9.0.11",
+		"jasmine-core": "~5.1.2",
+		"karma": "~6.4.3",
+		"karma-chrome-launcher": "~3.2.0",
+		"karma-coverage": "~2.2.1",
+		"karma-jasmine": "~5.1.0",
+		"karma-spec-reporter": "0.0.36",
+		"protractor": "~7.0.0",
+		"serverless": "^3.38.0",
+		"serverless-finch": "^4.0.4",
+		"serverless-single-page-app-plugin": "^1.0.4",
+		"ts-node": "^10.9.1",
+		"typescript": "~5.3.0"
+	},
+	"lint-staged": {
+		"*.{ts,html}": [
+			"eslint --fix"
+		]
+	}
+}
