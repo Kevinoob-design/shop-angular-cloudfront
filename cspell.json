@@ -34,7 +34,8 @@
 		"webRoot",
 		"workspaceFolder",
 		"yarn",
-		"middyfy"
+		"middyfy",
+		"openapi"
 	],
 	"languageSettings": [
 		{

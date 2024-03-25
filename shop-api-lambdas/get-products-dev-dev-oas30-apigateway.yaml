@@ -1,0 +1,32 @@
+openapi: "3.0.1"
+info:
+  title: "get-products-dev"
+  version: "2024-03-24T23:39:13Z"
+servers:
+- url: "https://vc20i23gc5.execute-api.us-east-1.amazonaws.com/{basePath}"
+  variables:
+    basePath:
+      default: "dev"
+paths:
+  /products/{id}:
+    get:
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:252355243038:function:get-products-dev-getProduct/invocations"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+  /products:
+    get:
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:252355243038:function:get-products-dev-getProducts/invocations"
+        passthroughBehavior: "when_no_match"
+        type: "aws_proxy"
+components: {}
+x-amazon-apigateway-minimum-compression-size: 1024

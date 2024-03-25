@@ -150,7 +150,7 @@
 					"error",
 					{
 						"object": true,
-						"array": true
+						"array": false
 					}
 				],
 				"object-curly-newline": [

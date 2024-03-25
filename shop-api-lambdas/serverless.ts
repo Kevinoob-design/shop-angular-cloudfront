@@ -1,5 +1,5 @@
-import getProduct from '@functions/get-product'
-import getProducts from '@functions/get-products'
+import getProductsById from '@functions/get-product-by-id'
+import getProductsList from '@functions/get-products-list'
 import type { AWS } from '@serverless/typescript'
 
 const serverlessConfiguration: AWS = {
@@ -20,8 +20,8 @@ const serverlessConfiguration: AWS = {
 	},
 	// import the function via paths
 	functions: {
-		getProducts,
-		getProduct
+		getProductsList,
+		getProductsById
 	},
 	package: { individually: true },
 	custom: {
