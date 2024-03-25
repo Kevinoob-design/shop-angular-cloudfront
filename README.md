@@ -44,4 +44,8 @@ Follow the steps:
 
 - [S3 Host](http://aws-learn-cloud-practitioner.s3-website-us-east-1.amazonaws.com/) should return `403 forbidden`
 
-- [CloudFront Host](https://d3qmp603iowzgx.cloudfront.net/) should work properly
+- [CloudFront Host](https://d1w03e00wp0frf.cloudfront.net/) should work properly
+
+- [Get Products List](https://vc20i23gc5.execute-api.us-east-1.amazonaws.com/dev/products) should return product list
+
+- [Get Product by Id](https://vc20i23gc5.execute-api.us-east-1.amazonaws.com/dev/products/7567ec4b-b10c-48c5-9345-fc73c48a80a0) should return product by id
