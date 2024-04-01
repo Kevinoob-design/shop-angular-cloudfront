@@ -1,4 +1,4 @@
-import { DynamoDBClient, PutItemCommand, ScanCommand } from '@aws-sdk/client-dynamodb'
+import { DynamoDBClient, PutItemCommandInput, ScanCommand, TransactWriteItemsCommand, TransactWriteItemsCommandInput } from '@aws-sdk/client-dynamodb'
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 import { uuid } from '@libs/util'
 import { AWS_CONFIGS, DYNAMO_DB_TABLES } from 'src/config/config'
@@ -69,18 +69,22 @@ export class ProductService {
 			id: uuid()
 		}
 
-		const putProductCommand = new PutItemCommand({
+		const putProductCommand: PutItemCommandInput = {
 			TableName: DYNAMO_DB_TABLES.products, Item: marshall(product)
-		})
+		}
 
-		const putStockCommand = new PutItemCommand({
+		const putStockCommand: PutItemCommandInput = {
 			TableName: DYNAMO_DB_TABLES.stocks, Item: marshall(stock)
-		})
+		}
 
-		await Promise.all([
-			await this.documentClient.send(putProductCommand),
-			await this.documentClient.send(putStockCommand)
-		])
+		const transactionInput: TransactWriteItemsCommandInput = {
+			TransactItems: [
+				{ Put: putProductCommand },
+				{ Put: putStockCommand }
+			]
+		}
+
+		await this.documentClient.send(new TransactWriteItemsCommand(transactionInput))
 
 		return {
 			...product,

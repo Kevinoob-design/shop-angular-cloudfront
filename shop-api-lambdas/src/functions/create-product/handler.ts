@@ -6,6 +6,8 @@ import { ProductService } from '../../service/products.service'
 
 const createProduct: Handler = async (event: APIGatewayEvent) => {
 
+	console.log('createProduct event.body', event.body)
+
 	const newProductStock: ProductStock = JSON.parse(event.body)
 
 	const productStock = await new ProductService().createProduct(newProductStock)

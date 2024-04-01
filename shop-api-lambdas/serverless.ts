@@ -10,6 +10,7 @@ const serverlessConfiguration: AWS = {
 	provider: {
 		name: 'aws',
 		runtime: 'nodejs20.x',
+		httpApi: { cors: true },
 		apiGateway: {
 			minimumCompressionSize: 1024,
 			shouldStartNameWithService: true

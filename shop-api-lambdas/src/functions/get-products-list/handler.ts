@@ -5,6 +5,8 @@ import { ProductService } from '../../service/products.service'
 
 const getProducts: Handler = async () => {
 
+	console.log('getProducts with no events')
+
 	const productStockList = await new ProductService().getProducts()
 
 	return formatJSONResponse(productStockList)
