@@ -1,3 +1,4 @@
+import createProduct from '@functions/create-product'
 import getProductsById from '@functions/get-product-by-id'
 import getProductsList from '@functions/get-products-list'
 import type { AWS } from '@serverless/typescript'
@@ -14,6 +15,9 @@ const serverlessConfiguration: AWS = {
 			shouldStartNameWithService: true
 		},
 		environment: {
+			MAIN_AWS_REGION: 'us-east-1',
+			PRODUCTS_TABLE: 'products',
+			STOCKS_TABLE: 'stocks',
 			AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
 			NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000'
 		},
@@ -23,12 +27,12 @@ const serverlessConfiguration: AWS = {
 					{
 						Effect: 'Allow',
 						Action: [ 'dynamodb:Scan', 'dynamodb:GetItem', 'dynamodb:Query', 'dynamodb:PutItem', 'dynamodb:UpdateItem', 'dynamodb:DeleteItem' ],
-						Resource: 'arn:aws:dynamodb:us-east-1:*:table/products'
+						Resource: 'arn:aws:dynamodb:${self:provider.environment.MAIN_AWS_REGION}:*:table/${self:provider.environment.PRODUCTS_TABLE}'
 					},
 					{
 						Effect: 'Allow',
 						Action: [ 'dynamodb:Scan', 'dynamodb:GetItem', 'dynamodb:Query', 'dynamodb:PutItem', 'dynamodb:UpdateItem', 'dynamodb:DeleteItem' ],
-						Resource: 'arn:aws:dynamodb:us-east-1:*:table/stocks'
+						Resource: 'arn:aws:dynamodb:${self:provider.environment.MAIN_AWS_REGION}:*:table/${self:provider.environment.STOCKS_TABLE}'
 					}
 				]
 			}
@@ -37,7 +41,8 @@ const serverlessConfiguration: AWS = {
 	// import the function via paths
 	functions: {
 		getProductsList,
-		getProductsById
+		getProductsById,
+		createProduct
 	},
 	package: { individually: true },
 	custom: {
