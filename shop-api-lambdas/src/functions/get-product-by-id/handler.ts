@@ -6,11 +6,9 @@ import { ProductService } from '../../service/products.service'
 const getProduct: Handler = async (event: APIGatewayEvent) => {
 	const { id } = event.pathParameters
 
-	const productService = new ProductService()
+	const productStock = await new ProductService().getProductById(id)
 
-	const product = productService.getProductById(id)
-
-	return formatJSONResponse(product, product ? 200 : 404)
+	return formatJSONResponse(productStock, productStock ? 200 : 404)
 }
 
 export const main = getProduct

@@ -5,9 +5,9 @@ import { ProductService } from '../../service/products.service'
 
 const getProducts: Handler = async () => {
 
-	const productService = new ProductService()
+	const productStockList = await new ProductService().getProducts()
 
-	return formatJSONResponse(productService.getProducts())
+	return formatJSONResponse(productStockList)
 }
 
 export const main = getProducts
