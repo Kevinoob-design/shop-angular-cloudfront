@@ -1,68 +1,110 @@
-export class ProductService {
-	private products = [
-		{
-			count: 4,
-			description: 'Short Product Description1',
-			id: '7567ec4b-b10c-48c5-9345-fc73c48a80aa',
-			price: 2.4,
-			title: 'ProductOne'
-		},
-		{
-			count: 6,
-			description: 'Short Product Description3',
-			id: '7567ec4b-b10c-48c5-9345-fc73c48a80a0',
-			price: 10,
-			title: 'ProductNew'
-		},
-		{
-			count: 7,
-			description: 'Short Product Description2',
-			id: '7567ec4b-b10c-48c5-9345-fc73c48a80a2',
-			price: 23,
-			title: 'ProductTop'
-		},
-		{
-			count: 12,
-			description: 'Short Product Description7',
-			id: '7567ec4b-b10c-48c5-9345-fc73c48a80a1',
-			price: 15,
-			title: 'ProductTitle'
-		},
-		{
-			count: 7,
-			description: 'Short Product Description2',
-			id: '7567ec4b-b10c-48c5-9345-fc73c48a80a3',
-			price: 23,
-			title: 'Product'
-		},
-		{
-			count: 8,
-			description: 'Short Product Description4',
-			id: '7567ec4b-b10c-48c5-9345-fc73348a80a1',
-			price: 15,
-			title: 'ProductTest'
-		},
-		{
-			count: 2,
-			description: 'Short Product Description1',
-			id: '7567ec4b-b10c-48c5-9445-fc73c48a80a2',
-			price: 23,
-			title: 'Product2'
-		},
-		{
-			count: 3,
-			description: 'Short Product Description7',
-			id: '7567ec4b-b10c-45c5-9345-fc73c48a80a1',
-			price: 15,
-			title: 'ProductName'
-		}
-	]
+import { DynamoDBClient, PutItemCommandInput, ScanCommand, TransactWriteItemsCommand, TransactWriteItemsCommandInput } from '@aws-sdk/client-dynamodb'
+import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
+import { uuid } from '@libs/util'
+import { AWS_CONFIGS, DYNAMO_DB_TABLES } from 'src/config/config'
 
-	getProducts() {
-		return this.products
+import { Product, ProductStock, Stock } from '../types/ProductStock'
+
+export class ProductService {
+
+	private readonly documentClient = new DynamoDBClient({ region: AWS_CONFIGS.region })
+
+	async getProducts(): Promise<ProductStock[]> {
+
+		const scanCommand = new ScanCommand({ TableName: DYNAMO_DB_TABLES.products })
+
+		const scanCommandOutput = await this.documentClient.send(scanCommand)
+
+		const promises = scanCommandOutput.Items.map(async item => {
+
+			const product = unmarshall(item) as Product
+
+			const stockItem = await this.getStockByProductId(product.id)
+
+			return {
+				...product,
+				count: stockItem.count
+			} as ProductStock
+		})
+
+		const productStockList = await Promise.all(promises)
+
+		return productStockList
 	}
 
-	getProductById(id: string) {
-		return this.products.find(product => product.id === id)
+	async getProductById(id: string): Promise<ProductStock> {
+
+		const scanCommand = new ScanCommand({
+			TableName: DYNAMO_DB_TABLES.products,
+			FilterExpression: 'id = :id',
+			ExpressionAttributeValues: { ':id': { 'S': id } }
+		})
+
+		const scanCommandOutput = await this.documentClient.send(scanCommand)
+
+		const product = unmarshall(scanCommandOutput.Items[ 0 ]) as Product
+
+		const stockItem = await this.getStockByProductId(id)
+
+		const productStock: ProductStock = {
+			...product,
+			count: stockItem.count
+		}
+
+		return productStock
+	}
+
+	async createProduct(newProductStock: ProductStock): Promise<ProductStock> {
+
+		const { count, ...newProduct } = newProductStock
+
+		const product = {
+			...newProduct,
+			id: uuid()
+		}
+
+		const stock = {
+			product_id: product.id,
+			count,
+			id: uuid()
+		}
+
+		const putProductCommand: PutItemCommandInput = {
+			TableName: DYNAMO_DB_TABLES.products, Item: marshall(product)
+		}
+
+		const putStockCommand: PutItemCommandInput = {
+			TableName: DYNAMO_DB_TABLES.stocks, Item: marshall(stock)
+		}
+
+		const transactionInput: TransactWriteItemsCommandInput = {
+			TransactItems: [
+				{ Put: putProductCommand },
+				{ Put: putStockCommand }
+			]
+		}
+
+		await this.documentClient.send(new TransactWriteItemsCommand(transactionInput))
+
+		return {
+			...product,
+			count: stock.count
+		}
+	}
+
+	private async getStockByProductId(productId: string): Promise<Stock> {
+		const scanCommand = new ScanCommand({
+			TableName: DYNAMO_DB_TABLES.stocks,
+			FilterExpression: 'product_id = :productId',
+			ExpressionAttributeValues: { ':productId': { 'S': productId } }
+		})
+
+		const scanCommandOutput = await this.documentClient.send(scanCommand)
+
+		console.log(scanCommandOutput.Items)
+
+		const stock = unmarshall(scanCommandOutput.Items[ 0 ]) as Stock
+
+		return stock
 	}
 }

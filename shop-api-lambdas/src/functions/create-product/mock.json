@@ -1,0 +1,6 @@
+{
+	"headers": {
+		"Content-Type": "application/json"
+	},
+	"body": "{\"count\": 10,\"description\": \"High-quality T-shirt made from organic cotton\",\"price\": 19.99,\"title\": \"Organic Cotton T-shirt\"}"
+}

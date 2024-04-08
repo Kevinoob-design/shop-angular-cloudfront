@@ -8,7 +8,9 @@
 		"test": "ng test",
 		"e2e": "ng e2e",
 		"client:deploy": "yarn build && npx --no-install sls client deploy --no-confirm",
-		"sls:deploy": "sls deploy"
+		"sls:deploy": "sls deploy",
+		"aws:sync:client": "yarn build && aws s3 sync ./dist/app/ s3://aws-learn-cloud-practitioner-angular-shop-front-end/",
+		"aws:rm:client": "aws s3 rm s3://aws-learn-cloud-practitioner-angular-shop-front-end/ --recursive"
 	},
 	"private": true,
 	"dependencies": {

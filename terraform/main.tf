@@ -1,3 +1,5 @@
+//! S3 AND CLOUD FRONT
+
 provider "aws" {
   region = "us-east-1"
 }
@@ -102,4 +104,49 @@ data "aws_iam_policy_document" "front_end_bucket" {
 resource "aws_s3_bucket_policy" "front_end_bucket_policy" {
   bucket = aws_s3_bucket.front_end_bucket.id
   policy = data.aws_iam_policy_document.front_end_bucket.json
+}
+
+//! DYNAMO DB TABLES
+
+resource "aws_dynamodb_table" "dynamodb_table_products" {
+  name         = "products"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+  range_key    = "title"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  attribute {
+    name = "title"
+    type = "S"
+  }
+
+  tags = {
+    Name        = "prducts-table"
+    Environment = "dev"
+  }
+}
+
+resource "aws_dynamodb_table" "dynamodb_table_stocks" {
+  name         = "stocks"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "id"
+  range_key    = "product_id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  attribute {
+    name = "product_id"
+    type = "S"
+  }
+  tags = {
+    Name        = "stocks-table"
+    Environment = "dev"
+  }
 }
