@@ -45,7 +45,9 @@
 		"unmarshall",
 		"webRoot",
 		"workspaceFolder",
-		"yarn"
+		"yarn",
+		"querystrings",
+		"presigner"
 	],
 	"languageSettings": [
 		{
