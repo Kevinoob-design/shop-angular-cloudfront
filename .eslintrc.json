@@ -97,7 +97,7 @@
 						"selector": ["variableLike"],
 						"types": ["boolean"],
 						"format": ["camelCase", "UPPER_CASE"],
-						"prefix": ["is", "should", "has", "can", "did", "will"]
+						"prefix": ["is", "should", "has", "can", "did", "will", "IS_", "SHOULD_", "HAS_", "CAN_", "DID_", "WILL_"]
 					}
 				],
 				"max-lines": [

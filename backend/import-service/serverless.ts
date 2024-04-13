@@ -16,7 +16,7 @@ const serverlessConfiguration: AWS = {
 		},
 		environment: {
 			MAIN_AWS_REGION: 'us-east-1',
-			S3_BUCKET: 'import-product-bucket',
+			S3_BUCKET: 'shop-aws-epam-learn-import-product-bucket',
 			AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
 			NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000'
 		},
@@ -36,6 +36,26 @@ const serverlessConfiguration: AWS = {
 	functions: {
 		importProductsFile,
 		importFileParser
+	},
+	resources: {
+		Resources: {
+			ProductBucket: {
+				Type: 'AWS::S3::Bucket',
+				Properties: {
+					BucketName: '${self:provider.environment.S3_BUCKET}',
+					CorsConfiguration: {
+						CorsRules: [
+							{
+								AllowedOrigins: [ '*' ],
+								AllowedHeaders: [ '*' ],
+								AllowedMethods: [ 'PUT', 'HEAD' ],
+								MaxAge: 3000
+							}
+						]
+					}
+				}
+			}
+		}
 	},
 	package: { individually: true },
 	custom: {

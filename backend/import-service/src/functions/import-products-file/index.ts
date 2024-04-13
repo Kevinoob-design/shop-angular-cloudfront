@@ -1,4 +1,5 @@
 import { handlerPath } from '@libs/handler-resolver'
+import { AWS } from '@serverless/typescript'
 
 export default {
 	handler: `${handlerPath(__dirname)}/handler.main`,
@@ -11,4 +12,4 @@ export default {
 			}
 		}
 	]
-}
+} as AWS['functions']['events']

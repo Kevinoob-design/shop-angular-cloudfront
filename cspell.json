@@ -47,7 +47,8 @@
 		"workspaceFolder",
 		"yarn",
 		"querystrings",
-		"presigner"
+		"presigner",
+		"shuf"
 	],
 	"languageSettings": [
 		{

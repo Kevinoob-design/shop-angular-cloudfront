@@ -7,7 +7,7 @@ const importFile: Handler = async (event: APIGatewayEvent) => {
 
 	const { name } = event.queryStringParameters
 
-	console.log(`preparing signed url for ${name}`)
+	console.info(`preparing signed url for ${name}`)
 
 	const signedUrl = await new ImportService().importFile(name)
 
