@@ -7,8 +7,9 @@
 			"files": ["*.ts"],
 			"parserOptions": {
 				"project": [
-					"./shop-angular-cloudfront/tsconfig.json",
-					"./shop-api-lambdas/tsconfig.json"
+					"./www/tsconfig.json",
+					"./backend/product-service/tsconfig.json",
+					"./backend/import-service/tsconfig.json"
 				],
 				"createDefaultProgram": true
 			},
