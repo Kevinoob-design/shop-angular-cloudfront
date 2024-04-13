@@ -11,7 +11,7 @@ const parseUploadedFile: Handler = async (event: S3Event) => {
 	const IS_UPLOADED_BUCKET = BUCKET_NAME === S3_BUCKET.name
 	const HAS_CSV_IN_UPLOADED_BUCKET = OBJECT_KEY.startsWith('uploaded/')
 
-	if (!IS_UPLOADED_BUCKET || !HAS_CSV_IN_UPLOADED_BUCKET) {
+	if (!IS_UPLOADED_BUCKET && !HAS_CSV_IN_UPLOADED_BUCKET) {
 		console.info('not an uploaded file')
 
 		return
