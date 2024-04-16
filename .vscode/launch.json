@@ -5,14 +5,14 @@
 			"request": "launch",
 			"type": "chrome",
 			"url": "http://localhost:4200",
-			"webRoot": "${workspaceFolder}"
+			"webRoot": "${workspaceFolder}/www"
 		},
 		{
 			"name": "node",
 			"request": "launch",
 			"type": "node-terminal",
 			"command": "yarn start",
-			"cwd": "${workspaceFolder}"
+			"cwd": "${workspaceFolder}/www"
 		}
 	],
 	"compounds": [

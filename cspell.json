@@ -45,7 +45,11 @@
 		"unmarshall",
 		"webRoot",
 		"workspaceFolder",
-		"yarn"
+		"yarn",
+		"querystrings",
+		"presigner",
+		"shuf",
+		"Kevinoob"
 	],
 	"languageSettings": [
 		{
