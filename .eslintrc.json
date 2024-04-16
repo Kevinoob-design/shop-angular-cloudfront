@@ -7,8 +7,9 @@
 			"files": ["*.ts"],
 			"parserOptions": {
 				"project": [
-					"./shop-angular-cloudfront/tsconfig.json",
-					"./shop-api-lambdas/tsconfig.json"
+					"./www/tsconfig.json",
+					"./backend/product-service/tsconfig.json",
+					"./backend/import-service/tsconfig.json"
 				],
 				"createDefaultProgram": true
 			},
@@ -96,7 +97,7 @@
 						"selector": ["variableLike"],
 						"types": ["boolean"],
 						"format": ["camelCase", "UPPER_CASE"],
-						"prefix": ["is", "should", "has", "can", "did", "will"]
+						"prefix": ["is", "should", "has", "can", "did", "will", "IS_", "SHOULD_", "HAS_", "CAN_", "DID_", "WILL_"]
 					}
 				],
 				"max-lines": [
