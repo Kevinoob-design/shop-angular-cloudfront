@@ -1,7 +1,7 @@
 import { DynamoDBClient, PutItemCommandInput, ScanCommand, TransactWriteItemsCommand, TransactWriteItemsCommandInput } from '@aws-sdk/client-dynamodb'
 import { PublishCommand, SNSClient } from '@aws-sdk/client-sns'
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
-import { getConsoleTableString, uuid } from '@libs/util'
+import { uuid } from '@libs/util'
 import { AWS_CONFIGS, CREATE_PRODUCT_SNS, DYNAMO_DB_TABLES } from 'src/config/config'
 
 import { Product, ProductStock, Stock } from '../types/ProductStock'
