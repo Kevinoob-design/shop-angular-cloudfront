@@ -1,6 +1,7 @@
 import { CopyObjectCommand, DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
+import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs"
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { AWS_CONFIGS, S3_BUCKET } from "src/config/config"
+import { AWS_CONFIGS, CATALOG_ITEMS_QUEUE, S3_BUCKET } from "src/config/config"
 import { Stream } from "stream"
 
 import { ProductStock } from "../types/ProductStock"
@@ -19,36 +20,41 @@ export class ImportService {
 
 		const signedUrl = await getSignedUrl(s3, command, { expiresIn: 60 })
 
-		console.log(`signed url: ${signedUrl}`)
-
 		return signedUrl
 	}
 
 	async readUploadedFile(key: string) {
+		await this.readUploadedFilePromise(key)
+	}
 
+	async readUploadedFilePromise(key: string) {
 		const s3 = new S3Client({ region: AWS_CONFIGS.region })
 
 		const objectStream = await this.getObjectStream(s3, key)
 
-		const productStock = []
+		const productsStock = []
 
-		objectStream.on('data', (chunk: Stream) => {
-			productStock.push(...this.parseContentString(chunk.toString()))
-		})
+		return new Promise((resolve, reject) => {
+			objectStream.on('data', (chunk: Stream) => {
+				productsStock.push(...this.parseContentString(chunk.toString()))
+			})
 
-		objectStream.on('error', (err: Stream) => {
-			console.error(err.toString())
-		})
+			objectStream.on('error', (err: Stream) => {
+				console.error(err.toString())
+				reject(false)
+			})
 
-		objectStream.on('end', async () => {
-			console.info('end stream, marking object as parsed')
-			await this.copyObjectToParsed(s3, key)
-			await this.deleteObject(s3, key)
-		})
+			objectStream.on('end', async () => {
+				console.info('end stream, marking object as parsed')
+				await this.copyObjectToParsed(s3, key)
+				await this.deleteObject(s3, key)
+			})
 
-		objectStream.on('close', () => {
-			console.info('closed stream file')
-			console.table(productStock)
+			objectStream.on('close', async () => {
+				console.info('closed stream file, sending to queue')
+				await this.sendMessageBatchToQueue(productsStock)
+				resolve(true)
+			})
 		})
 	}
 
@@ -99,5 +105,23 @@ export class ImportService {
 				count: parseInt(count)
 			}
 		})
+	}
+
+	async sendMessageBatchToQueue(productsStock: ProductStock[]) {
+		const sqsClient = new SQSClient({})
+
+		const entries = productsStock.map((product, index) => ({
+			Id: `id${index}`,
+			MessageBody: JSON.stringify(product)
+		}))
+
+		const command = new SendMessageBatchCommand({
+			QueueUrl: CATALOG_ITEMS_QUEUE.url,
+			Entries: entries
+		})
+
+		const response = await sqsClient.send(command)
+
+		console.info('send queue output', response)
 	}
 }
