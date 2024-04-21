@@ -16,7 +16,9 @@ const serverlessConfiguration: AWS = {
 		},
 		environment: {
 			MAIN_AWS_REGION: 'us-east-1',
-			S3_BUCKET: 'shop-aws-epam-learn-import-product-bucket',
+			S3_BUCKET_NAME: 'shop-aws-epam-learn-import-product-bucket',
+			CATALOG_ITEMS_QUEUE_URL: 'https://sqs.us-east-1.amazonaws.com/252355243038/catalog-items-queue',
+			CATALOG_ITEMS_QUEUE_NAME: 'catalog-items-queue',
 			AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
 			NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000'
 		},
@@ -26,7 +28,12 @@ const serverlessConfiguration: AWS = {
 					{
 						Effect: 'Allow',
 						Action: [ 's3:ListBucket', 's3:GetObject', 's3:PutObject', 's3:DeleteObject', 's3:CopyObject' ],
-						Resource: 'arn:aws:s3:::${self:provider.environment.S3_BUCKET}/*'
+						Resource: 'arn:aws:s3:::${self:provider.environment.S3_BUCKET_NAME}/*'
+					},
+					{
+						Effect: 'Allow',
+						Action: [ 'sqs:SendMessage', 'sqs:SendMessageBatch' ],
+						Resource: 'arn:aws:sqs:${self:provider.environment.MAIN_AWS_REGION}:*:catalog-items-queue'
 					}
 				]
 			}
@@ -42,7 +49,7 @@ const serverlessConfiguration: AWS = {
 			ProductBucket: {
 				Type: 'AWS::S3::Bucket',
 				Properties: {
-					BucketName: '${self:provider.environment.S3_BUCKET}',
+					BucketName: '${self:provider.environment.S3_BUCKET_NAME}',
 					CorsConfiguration: {
 						CorsRules: [
 							{

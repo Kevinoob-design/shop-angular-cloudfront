@@ -19,7 +19,7 @@ const parseUploadedFile: Handler = async (event: S3Event) => {
 
 	console.info('parsing uploaded file')
 
-	await new ImportService().readUploadedFile(OBJECT_KEY)
+	await new ImportService().readUploadedFilePromise(OBJECT_KEY)
 }
 
 export const main = parseUploadedFile

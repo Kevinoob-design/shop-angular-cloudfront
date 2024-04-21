@@ -1,7 +1,8 @@
 import { DynamoDBClient, PutItemCommandInput, ScanCommand, TransactWriteItemsCommand, TransactWriteItemsCommandInput } from '@aws-sdk/client-dynamodb'
+import { PublishCommand, SNSClient } from '@aws-sdk/client-sns'
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 import { uuid } from '@libs/util'
-import { AWS_CONFIGS, DYNAMO_DB_TABLES } from 'src/config/config'
+import { AWS_CONFIGS, CREATE_PRODUCT_SNS, DYNAMO_DB_TABLES } from 'src/config/config'
 
 import { Product, ProductStock, Stock } from '../types/ProductStock'
 
@@ -86,10 +87,13 @@ export class ProductService {
 
 		await this.documentClient.send(new TransactWriteItemsCommand(transactionInput))
 
-		return {
-			...product,
-			count: stock.count
+		const productStock = {
+			...product, count: stock.count
 		}
+
+		await this.publishCreatedProduct(JSON.stringify(productStock))
+
+		return productStock
 	}
 
 	private async getStockByProductId(productId: string): Promise<Stock> {
@@ -106,5 +110,23 @@ export class ProductService {
 		const stock = unmarshall(scanCommandOutput.Items[ 0 ]) as Stock
 
 		return stock
+	}
+
+	async publishCreatedProduct(message: string) {
+
+		console.info("sending message to SNS", message)
+
+		const snsClient = new SNSClient({ region: AWS_CONFIGS.region })
+
+		const response = await snsClient.send(
+			new PublishCommand({
+				Message: message,
+				TopicArn: CREATE_PRODUCT_SNS.arn
+			})
+		)
+
+		console.info(response)
+
+		return response
 	}
 }
