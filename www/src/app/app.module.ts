@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module'
 import { CartModule } from './cart/cart.module'
 import { HeaderComponent } from './core/header/header.component'
 import { CONFIG_TOKEN } from './core/injection-tokens/config.token'
+import { AuthInterceptor } from './core/interceptors/auth-header.interceptor'
 import { ErrorPrintInterceptor } from './core/interceptors/error-print.interceptor'
 import { ProductsModule } from './products/products.module'
 
@@ -23,6 +24,11 @@ const interceptors: Provider[] = [
 	{
 		provide: HTTP_INTERCEPTORS,
 		useClass: ErrorPrintInterceptor,
+		multi: true
+	},
+	{
+		provide: HTTP_INTERCEPTORS,
+		useClass: AuthInterceptor,
 		multi: true
 	}
 ]

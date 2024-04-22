@@ -44,15 +44,11 @@ export class ImportService {
 				reject(false)
 			})
 
-			objectStream.on('end', async () => {
-				console.info('end stream, marking object as parsed')
-				await this.copyObjectToParsed(s3, key)
-				await this.deleteObject(s3, key)
-			})
-
 			objectStream.on('close', async () => {
 				console.info('closed stream file, sending to queue')
-				await this.sendMessageBatchToQueue(productsStock)
+				this.sendMessageBatchToQueue(productsStock)
+				await this.copyObjectToParsed(s3, key)
+				await this.deleteObject(s3, key)
 				resolve(true)
 			})
 		})
@@ -74,7 +70,7 @@ export class ImportService {
 		const copyCommand = new CopyObjectCommand({
 			Bucket: S3_BUCKET.name,
 			CopySource: `${S3_BUCKET.name}/${key}`,
-			Key: `parsed/${key}`
+			Key: `parsed/${key.split('/')[1]}`
 		})
 
 		await s3.send(copyCommand)
@@ -86,7 +82,7 @@ export class ImportService {
 
 		const deleteCommand = new DeleteObjectCommand({
 			Bucket: S3_BUCKET.name,
-			Key: `parsed/${key}`
+			Key: key
 		})
 
 		await s3.send(deleteCommand)

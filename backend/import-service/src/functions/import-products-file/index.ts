@@ -8,8 +8,18 @@ export default {
 			http: {
 				method: 'get',
 				path: 'import',
-				request: {parameters: {querystrings: {name: true}}}
+				cors: {
+					allowCredentials: false,
+					origins: [ '*' ],
+					headers: [ '*' ],
+					methods: [ 'GET', 'OPTIONS' ]
+				},
+				request: { parameters: { querystrings: { name: true } } },
+				authorizer: {
+					name: 'basicAuthorizer',
+					arn: 'arn:aws:lambda:us-east-1:252355243038:function:basic-authorizer-dev-basicAuthorizer'
+				}
 			}
 		}
 	]
-} as AWS['functions']['events']
+} as AWS[ 'functions' ][ 'events' ]
