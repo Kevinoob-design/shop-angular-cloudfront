@@ -50,4 +50,6 @@ Follow the steps:
 
 - [Get Product by Id](https://wy90rfbtf9.execute-api.us-east-1.amazonaws.com/dev/products/7567ec4b-b10c-48c5-9345-fc73c48a80a0) should return product by id
 
-- [Import product](https://gi1n2c6d18.execute-api.us-east-1.amazonaws.com/dev/import) should return signed url
+- [Import product](https://k0qdsot001.execute-api.us-east-1.amazonaws.com/dev/import) should return signed url
+
+- Encoded password `VEVTVF9QQVNTV09SRA==`

@@ -55,7 +55,7 @@ const serverlessConfiguration: AWS = {
 							{
 								AllowedOrigins: [ '*' ],
 								AllowedHeaders: [ '*' ],
-								AllowedMethods: [ 'PUT', 'HEAD' ],
+								AllowedMethods: [ 'PUT', 'DELETE', 'HEAD' ],
 								MaxAge: 3000
 							}
 						]
